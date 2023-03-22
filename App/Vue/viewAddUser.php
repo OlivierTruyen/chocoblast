@@ -25,5 +25,6 @@
 
 
     </form>
+    <div id="error"> <?php echo $msg; ?></div>
 </body>
 </html>

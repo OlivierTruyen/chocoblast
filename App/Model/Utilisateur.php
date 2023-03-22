@@ -6,14 +6,14 @@
         /*-----------------------
                 Attributs
         ------------------------*/
-        private ?int $id_utilisateur;
-        private ?string $nom_utilisateur;
-        private ?string $prenom_utilisateur;
-        private ?string $mail_utilisateur;
-        private ?string $password_utilisateur;
-        private ?string $image_utilisateur;
-        private ?bool $statut_utilisateur;
-        private ?Roles $roles;
+        private $id_utilisateur;
+        private  $nom_utilisateur;
+        private $prenom_utilisateur;
+        private $mail_utilisateur;
+        private  $password_utilisateur;
+        private $image_utilisateur;
+        private  $statut_utilisateur;
+        private $roles;
         /*-----------------------
                 Constructeur
         ------------------------*/
@@ -24,35 +24,35 @@
         /*-----------------------
             Getters et Setters
         ------------------------*/
-        public function getIdUtilisateur():?int{
+        public function getIdUtilisateur(){
             return $this->id_utilisateur;
         }
-        public function getNomUtilisateur():?string{
+        public function getNomUtilisateur(){
             return $this->nom_utilisateur;
         }
-        public function getPrenomUtilisateur():?string{
+        public function getPrenomUtilisateur(){
             return $this->prenom_utilisateur;
         }
-        public function getMailUtilisateur():?string{
+        public function getMailUtilisateur(){
             return $this->mail_utilisateur;
         }
-        public function getPasswordUtilisateur():?string{
+        public function getPasswordUtilisateur(){
             return $this->password_utilisateur;
         }
-        public function setNomUtilisateur($name):void{
+        public function setNomUtilisateur($name){
             $this->nom_utilisateur = $name;
         }
-        public function setPrenomUtilisateur($firstName):void{
+        public function setPrenomUtilisateur($firstName){
             $this->prenom_utilisateur = $firstName;
         }
-        public function setMailUtilisateur($mail):void{
+        public function setMailUtilisateur($mail){
             $this->mail_utilisateur = $mail;
         }
-        public function setPasswordUtilisateur($pwd):void{
+        public function setPasswordUtilisateur($pwd){
             $this->password_utilisateur = $pwd;
         }
 
-        public function addUser():void{
+        public function addUser(){
             try {
                 $nom=$this->nom_utilisateur;
                 $prenom=$this->prenom_utilisateur;
@@ -71,6 +71,23 @@
             catch(\Exception $e) {
                 die('Erreur :'.$e->getMessage());
             }
+
+        }
+
+        public function getUserByMail(){
+            try{
+                $mail = $this->mail_utilisateur;
+                $req = $this->connexion()->prepare('SELECT id_utilisateur , nom_utilisateur , prenom_utilisateur , mail_utilisateur, password_utilisateur ,image_utilisateur , statut_utilisateur , id_roles, FROM  utilisateur WHERE mail_utilisateur =?');
+    
+                $req->bindParam(1,$mail, \PDO::PARAM_STR);
+                $req->execute();
+                $data =$req->fetchAll(\PDO::FETCH_OBJ);
+                return $data;
+            }
+            catch(\Exception $e){
+                die('Erreur : '.$e->getMessage());
+            }
+
 
         }
 

@@ -13,13 +13,15 @@
         private  $password_utilisateur;
         private $image_utilisateur;
         private  $statut_utilisateur;
-        private $roles;
+        private ?Roles $roles;
         /*-----------------------
                 Constructeur
         ------------------------*/
         public function __construct(){
             //instancier un objet role quand on créé un
-            //$this->roles = new Roles('user');
+            $this->roles = new Roles;
+            $this->roles->setNom('user');
+            $this->roles->setIdRoles(1);
         }
         /*-----------------------
             Getters et Setters
@@ -54,16 +56,18 @@
 
         public function addUser(){
             try {
-                $nom=$this->nom_utilisateur;
-                $prenom=$this->prenom_utilisateur;
+                $nom = $this->nom_utilisateur;
+                $prenom = $this->prenom_utilisateur;
                 $mail = $this->mail_utilisateur;
                 $password = $this->password_utilisateur;
+                $id = $this->roles->getIdRoles();
 
-                $req=$this->connexion()->prepare('INSERT INTO utilisateur(nom_utilisateur , prenom_utilisateur, mail_utilisateur , password_utilisateur) VALUES (?,?,?,?)');
+                $req=$this->connexion()->prepare('INSERT INTO utilisateur(nom_utilisateur , prenom_utilisateur, mail_utilisateur , password_utilisateur , id_roles) VALUES (?,?,?,?,?)');
                 $req->bindParam(1 , $nom, \PDO::PARAM_STR);                                
                 $req->bindParam(2 , $prenom, \PDO::PARAM_STR);
                 $req->bindParam(3 , $mail, \PDO::PARAM_STR);
                 $req->bindParam(4 , $password, \PDO::PARAM_STR);
+                $req->bindParam(5 , $id, \PDO::PARAM_INT);
 
                 $req->execute();
 
@@ -75,20 +79,28 @@
         }
 
         public function getUserByMail(){
-            try{
+            //exécution de la requête
+            try {
+ 
                 $mail = $this->mail_utilisateur;
-                $req = $this->connexion()->prepare('SELECT id_utilisateur , nom_utilisateur , prenom_utilisateur , mail_utilisateur, password_utilisateur ,image_utilisateur , statut_utilisateur , id_roles, FROM  utilisateur WHERE mail_utilisateur =?');
-    
-                $req->bindParam(1,$mail, \PDO::PARAM_STR);
+     
+                $req = $this->connexion()->prepare('SELECT id_utilisateur, nom_utilisateur, prenom_utilisateur,
+                mail_utilisateur, password_utilisateur, image_utilisateur, statut_utilisateur, id_roles
+                FROM utilisateur WHERE mail_utilisateur = ?');
+     
+                $req->bindParam(1, $mail, \PDO::PARAM_STR);
+
                 $req->execute();
-                $data =$req->fetchAll(\PDO::FETCH_OBJ);
+                //récupération sous forme de tableau d'objets
+                $data = $req->fetchAll(\PDO::FETCH_OBJ);
+
                 return $data;
             }
-            catch(\Exception $e){
+            //gestion des erreurs (Exception)
+            catch (\Exception $e){
+                //affichage de l'erreur
                 die('Erreur : '.$e->getMessage());
             }
-
-
         }
 
         

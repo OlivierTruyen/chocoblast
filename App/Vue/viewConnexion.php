@@ -9,7 +9,16 @@
     <title>Document</title>
 </head>
 <body>
-    <?php include './App/Vue/viewMenu.php' ; ?>
-    <h1>ERROR</h1>
+    <form action="" method="POST">
+        <label for="mail_utilisateur">email :</label>
+        <input type="text" name="mail_utilisateur">
+
+        <label for="">Mot de passe :</label>
+        <input type="password" name="password_utilisateur">
+        <input type="submit" name="submit">
+
+    </form>
+
+    <div id="error"> <?php echo $msg; ?></div>
 </body>
 </html>

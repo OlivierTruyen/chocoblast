@@ -7,7 +7,8 @@
         private $nom_roles;
 
         public function __construct(){
-            $this->id_roles = 1 ;
+            // $this->id_roles = 1 ;
+
             
         }
 
@@ -21,6 +22,9 @@
 
         public function setNom($name):void{
             $this->nom_roles=$name;
+        }
+        public function setIdRoles($id){
+            $this->id_roles = $id;
         }
         // exercice
         public function addRoles(){

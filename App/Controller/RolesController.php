@@ -21,21 +21,16 @@
                     else{
                         $this->setNom($nom_roles);
                         $this->addRoles();
-                        $msg = "Le compte : " .$nom_roles ." a été en BDD";
+                        $msg = "Le compte : " .$nom_roles ." a été ajouté en BDD";
                     }
 
                 }
                 else{
                      $msg = "Veuillez remplir tous les champs du formulaire";
                 }
-                include './App/Vue/viewAddRoles.php';
             }
-
-            
-    }
-
-    
-
+            include './App/Vue/viewAddRoles.php';   
+        }
     }
 
 

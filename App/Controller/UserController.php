@@ -1,6 +1,5 @@
 <?php
-
-    namespace App\Controller;
+namespace App\Controller;
     use App\Model\Utilisateur;
     use App\Utils\Fonctions;
 
@@ -39,6 +38,39 @@
 
 
             include './App/Vue/viewAddUser.php';
+        }
+
+        public function connexionUser(){
+            $msg = "";
+
+            if(isset($_POST['submit'])){
+                $mail =Fonctions::CleanInput($_POST['mail_utilisateur']);
+                $password =Fonctions::CleanInput($_POST['password_utilisateur']);
+
+                if(!empty($mail) AND !empty($password)){
+                    $this->setMailUtilisateur($mail);
+                    $this->setPasswordUtilisateur($password);
+
+                    if($this->getUserByMail()){
+                        $data =$this->getUserByMail();
+                        if(password_verify($password, $data[0]->password_utilisateur)){
+                            $_SESSION['connected'] = true;
+                            $_SESSION['mail'] = $data[0]->mail_utilisateur;
+                            $_SESSION['id'] =$data[0]->id_utilisateur;
+                            $_SESSION['nom']= $data[0]->nom_utilisateur;
+                            $_SESSION['prenom'] =$data[0]->prenom_utilisateur;
+                            $msg = "connecté";
+                        }
+                        else{
+                            $msg =" Mail ou mot de passe incorecte";
+                        }
+                    }
+                }
+                else{
+                    $msg="Veuillez remplir les champs";
+                }
+            }
+            include './App/Vue/viewConnexion.php';
         }
 
     }

@@ -1,4 +1,5 @@
 <?php
+    session_start();
     use App\Controller\UserController;
     use App\Controller\RolesController;
     include './App/Utils/BddConnect.php';
@@ -25,6 +26,9 @@
             break;
         case '/chocoblast/rolesAdd':
             $rolesController->insertRoles();
+            break;
+        case '/chocoblast/connexion':
+            $userController->connexionUser();
             break;
         default:
             include './App/Vue/error.php';

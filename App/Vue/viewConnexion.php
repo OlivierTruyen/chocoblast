@@ -9,15 +9,17 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="POST">
-        <label for="mail_utilisateur">email :</label>
-        <input type="text" name="mail_utilisateur">
+    <div class="form">
+        <form action="" method="POST">
+            <label for="mail_utilisateur">email :</label>
+            <input type="text" name="mail_utilisateur">
 
-        <label for="">Mot de passe :</label>
-        <input type="password" name="password_utilisateur">
-        <input type="submit" name="submit">
+            <label for="">Mot de passe :</label>
+            <input type="password" name="password_utilisateur">
+            <input type="submit" name="submit">
 
-    </form>
+        </form>
+    </div>
 
     <div id="error"> <?php echo $msg; ?></div>
 </body>

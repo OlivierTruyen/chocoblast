@@ -61,6 +61,10 @@
 
 
         }
+
+        public function __tooString(){
+            return $this->nom_roles;
+        }
     }
 
 

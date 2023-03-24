@@ -30,6 +30,9 @@
         case '/chocoblast/connexion':
             $userController->connexionUser();
             break;
+        case '/chocoblast/deconnexion':
+            $userController->deconnexionUser();
+            break;
         default:
             include './App/Vue/error.php';
             break;

@@ -10,6 +10,6 @@
 </head>
 <body>
     <?php include './App/Vue/viewMenu.php' ; ?>
-    <h1>home</h1>
+    <h1>Bienvenue sur Chocoblast</h1>
 </body>
 </html>

@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+<?php include './App/Vue/viewMenu.php' ; ?>
     <div class="form">
         <form action="" method="POST">
             <label for="mail_utilisateur">email :</label>

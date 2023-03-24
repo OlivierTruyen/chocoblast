@@ -2,6 +2,8 @@
     namespace App\Model;
     use App\Utils\BddConnect;
     use App\Model\Roles;
+use Exception;
+
     class Utilisateur extends BddConnect{
         /*-----------------------
                 Attributs
@@ -103,6 +105,23 @@
             }
         }
 
+        public function __tooString(){
+            return $this->nom_utilisateur;
+        }
+
+        public function getUserAll(){
+            try{
+                $req = $this->connexion()->prepare('SELECT id_utilisateur , nom_utilisateur , 
+                prenom_utilisateur , mail_utilisateur , image_utilisateur FROM utilisateur');
+                $req->execute();
+                $data = $req->fetchAll(\PDO::FETCH_OBJ);
+                return $data;
+            }
+
+            catch(\Exception  $e){
+                die('erreur: ' .$e->getMessage());
+            }
+        }
         
     }
 

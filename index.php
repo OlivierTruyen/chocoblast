@@ -1,13 +1,18 @@
 <?php
+    //Démarrage de la session
     session_start();
+    //Importer les ressources
     use App\Controller\UserController;
     use App\Controller\RolesController;
+    use App\Controller\ChocoblastController;
     include './App/Utils/BddConnect.php';
     include './App/Utils/Fonctions.php';
-    include './App/Model/Utilisateur.php';
-    include './App/Controller/UserController.php';
     include './App/Model/Roles.php';
     include './App/Controller/RolesController.php';
+    include './App/Model/Utilisateur.php';
+    include './App/Controller/UserController.php';
+    include './App/Model/Chocoblast.php';
+    include './App/Controller/ChocoblastController.php';
 
     //Analyse de l'URL avec parse_url() et retourne ses composants
     $url = parse_url($_SERVER['REQUEST_URI']);
@@ -16,25 +21,60 @@
     //instance des controllers
     $userController = new UserController();
     $rolesController = new RolesController();
-    //routeur
-    switch ($path) {
-        case '/chocoblast/':
-            include './App/Vue/home.php';
-            break;
-        case '/chocoblast/userAdd':
-            $userController->insertUser();
-            break;
-        case '/chocoblast/rolesAdd':
-            $rolesController->insertRoles();
-            break;
-        case '/chocoblast/connexion':
-            $userController->connexionUser();
-            break;
-        case '/chocoblast/deconnexion':
-            $userController->deconnexionUser();
-            break;
-        default:
-            include './App/Vue/error.php';
-            break;
+    $chocoblastController = new ChocoblastController();
+    //routeur connecte
+    if(isset($_SESSION['connected'])){
+        switch ($path) {
+            case '/projet/':
+                include './App/Vue/home.php';
+                break;
+            case '/projet/rolesAdd':
+                $rolesController->insertRoles();
+                break;
+            case '/projet/chocoblastAdd':
+                $chocoblastController->insertChocoblast();
+                break;
+            case '/projet/chocoblastAll':
+                $chocoblastController->showAllChocoblast();
+                break;
+            case '/projet/chocoblastDelete':
+                $chocoblastController->deleteChocoblastById();
+                break;
+            case '/projet/chocoblastUpdate':
+                $chocoblastController->updateChocoblastById();
+                break;
+            case '/projet/deconnexion':
+                $userController->deconnexionUser();
+                break;
+            default:
+                include './App/Vue/error.php';
+                break;
+            }
+    }
+    //routeur no connecté
+    else{
+        switch ($path) {
+            case '/projet/':
+                include './App/Vue/home.php';
+                break;
+            case '/projet/userAdd':
+                $userController->insertUser();
+                break;
+            case '/projet/chocoblastAll':
+                $chocoblastController->showAllChocoblast();
+                break;
+            case '/projet/chocoblastDelete':
+                header('Location: ./chocoblastAll');
+                break;
+            case '/projet/chocoblastUpdate':
+                header('Location: ./chocoblastAll');
+                break;
+            case '/projet/connexion':
+                $userController->connexionUser();
+                break;
+            default:
+                include './App/Vue/error.php';
+                break;
+        }
     }
 ?>

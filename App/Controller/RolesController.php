@@ -2,37 +2,54 @@
     namespace App\Controller;
     use App\Model\Roles;
     use App\Utils\Fonctions;
-
     class RolesController extends Roles{
-
-        public function insertRoles(){
-
+        //Fonction qui ajoute un role en BDD
+        public function insertRoles():void{
+            //variable pour stocker les messages d'erreurs
             $msg = "";
-
-            if (isset($_POST['submit'])){
-                $nom_roles =Fonctions::CleanInput($_POST['nom_roles']) ;               
-
-                if(!empty($nom_roles)){
-                    $this->setNom($nom_roles);
-                    if($this->getUserRoles()){
-                        $msg= "Les information sont incorrectes";
-
+            //Tester si le formulaire est submit
+            if(isset($_POST['submit'])){
+                //Nettoyer les inputs du formulaire
+                $nom = Fonctions::cleanInput($_POST['nom_roles']);
+                //Tester si le champ de formulaire est rempli
+                if(!empty($nom)){
+                    //Setter les valeurs à l'objet
+                    $this->setNomRoles($nom);
+                    //Test si le role existe déja
+                    if($this->getRolesByName()){
+                        $msg = "Le role : ".$nom." existe déja en BDD";
+                        echo '<script>
+                            setTimeout(()=>{
+                                modal.style.display = "block";
+                            }, 500);
+                        </script>';
                     }
+                    //Test si il n'existe pas 
                     else{
-                        $this->setNom($nom_roles);
+                        //Ajouter en BDD le nouveau role
                         $this->addRoles();
-                        $msg = "Le compte : " .$nom_roles ." a été ajouté en BDD";
+                        //Afficher la confirmation
+                        $msg = "Le role : ".$nom." à été ajouté en BDD";
+                        echo '<script>
+                            setTimeout(()=>{
+                                modal.style.display = "block";
+                            }, 500);
+                        </script>';
                     }
-
                 }
+                //Test si les champs sont vides
                 else{
-                     $msg = "Veuillez remplir tous les champs du formulaire";
+                    //afficher l'erreur
+                    $msg = "Veuillez remplir les champs de formulaire";
+                    echo '<script>
+                        setTimeout(()=>{
+                            modal.style.display = "block";
+                        }, 500);
+                    </script>';
                 }
             }
-            include './App/Vue/viewAddRoles.php';   
+            //Importer la vue
+            include './App/Vue/viewAddRoles.php';
         }
     }
-
-
-
 ?>
